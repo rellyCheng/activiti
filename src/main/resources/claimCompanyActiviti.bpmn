@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1533015004600" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="claimCompanyActiviti" isClosed="false" isExecutable="true" name="企业认领" processType="None">
+    <startEvent id="start" name="开始"/>
+    <userTask activiti:assignee="${user}" activiti:exclusive="true" id="commitFile" name="提交资料">
+      <documentation id="commitFile_D_1"/>
+    </userTask>
+    <userTask activiti:candidateUsers="${assignees}" activiti:exclusive="true" id="firstCheck" name="初审">
+      <documentation id="firstCheck_D_1"/>
+    </userTask>
+    <exclusiveGateway gatewayDirection="Unspecified" id="firstGateWay" name="初审网关"/>
+    <userTask activiti:candidateUsers="${assignees}" activiti:exclusive="true" id="lastCheck" name="终审">
+      <documentation id="lastCheck_D_1"><![CDATA[节点]]></documentation>
+    </userTask>
+    <exclusiveGateway gatewayDirection="Unspecified" id="lastGateWay" name="终审网关"/>
+    <endEvent id="end" name="结束"/>
+    <sequenceFlow id="_9" sourceRef="start" targetRef="commitFile"/>
+    <sequenceFlow id="_10" sourceRef="commitFile" targetRef="firstCheck"/>
+    <sequenceFlow id="_11" sourceRef="firstCheck" targetRef="firstGateWay"/>
+    <sequenceFlow id="_12" sourceRef="firstGateWay" targetRef="lastCheck">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${message=='ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_13" sourceRef="firstGateWay" targetRef="commitFile">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${message=='rejectToStart'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_14" sourceRef="lastCheck" targetRef="lastGateWay"/>
+    <sequenceFlow id="_15" sourceRef="lastGateWay" targetRef="end">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${message=='ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_16" sourceRef="lastGateWay" targetRef="commitFile">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${message=='rejectToStart'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="claimCompanyActiviti">
+      <bpmndi:BPMNShape bpmnElement="start" id="Shape-start">
+        <omgdc:Bounds height="32.0" width="32.0" x="290.0" y="0.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="commitFile" id="Shape-commitFile">
+        <omgdc:Bounds height="55.0" width="85.0" x="270.0" y="105.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="firstCheck" id="Shape-firstCheck">
+        <omgdc:Bounds height="55.0" width="90.0" x="270.0" y="205.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="90.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="firstGateWay" id="Shape-firstGateWay" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="290.0" y="295.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lastCheck" id="Shape-lastCheck">
+        <omgdc:Bounds height="55.0" width="85.0" x="265.0" y="385.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lastGateWay" id="Shape-lastGateWay" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="295.0" y="465.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="Shape-end">
+        <omgdc:Bounds height="32.0" width="32.0" x="295.0" y="540.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_13" id="BPMNEdge__13" sourceElement="firstGateWay" targetElement="commitFile">
+        <omgdi:waypoint x="290.0" y="311.0"/>
+        <omgdi:waypoint x="195.0" y="250.0"/>
+        <omgdi:waypoint x="270.0" y="132.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="firstGateWay" targetElement="activiti:lastCheck">
+        <omgdi:waypoint x="305.0" y="326.0"/>
+        <omgdi:waypoint x="305.0" y="370.0"/>
+        <omgdi:waypoint x="305.0" y="385.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15" id="BPMNEdge__15" sourceElement="lastGateWay" targetElement="end">
+        <omgdi:waypoint x="311.0" y="497.0"/>
+        <omgdi:waypoint x="311.0" y="540.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14" id="BPMNEdge__14" sourceElement="activiti:lastCheck" targetElement="lastGateWay">
+        <omgdi:waypoint x="311.0" y="440.0"/>
+        <omgdi:waypoint x="311.0" y="465.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16" id="BPMNEdge__16" sourceElement="lastGateWay" targetElement="commitFile">
+        <omgdi:waypoint x="327.0" y="481.0"/>
+        <omgdi:waypoint x="460.0" y="320.0"/>
+        <omgdi:waypoint x="355.0" y="132.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="start" targetElement="commitFile">
+        <omgdi:waypoint x="306.0" y="32.0"/>
+        <omgdi:waypoint x="306.0" y="105.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="activiti:firstCheck" targetElement="firstGateWay">
+        <omgdi:waypoint x="306.0" y="260.0"/>
+        <omgdi:waypoint x="306.0" y="295.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="commitFile" targetElement="activiti:firstCheck">
+        <omgdi:waypoint x="312.5" y="160.0"/>
+        <omgdi:waypoint x="312.5" y="205.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -3,7 +3,6 @@ package com.rayleigh.activiti.config;
 import org.activiti.engine.*;
 import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
 import org.activiti.engine.repository.DeploymentBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -24,7 +23,7 @@ public class ActivitiConfig {
     private DataSource dataSource;
     @Resource
     private ResourcePatternResolver resourceLoader;
-    
+
     /**
      * 初始化配置，将创建28张表
      * @return
@@ -37,7 +36,7 @@ public class ActivitiConfig {
         configuration.setAsyncExecutorActivate(false);
         return configuration;
     }
-    
+
     @Bean
     public ProcessEngine processEngine() {
         return processEngineConfiguration().buildProcessEngine();
@@ -60,10 +59,10 @@ public class ActivitiConfig {
     public TaskService taskService() {
         return processEngine().getTaskService();
     }
-    
+
     /**
      * 部署流程
-     * @throws IOException 
+     * @throws IOException
      */
     @PostConstruct
     public void initProcess() throws IOException {
