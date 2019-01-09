@@ -1,5 +1,6 @@
 package com.rayleigh.activiti.Impl;
 
+import com.rayleigh.activiti.Enum.ActivitiEnum;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.*;
@@ -27,21 +28,21 @@ public class ActivitiService {
     @Autowired
     private  HistoryService historyService;
 
-    private static final String NEXTASSIGNEES = "assignees";//下一环节审批人
-    private static final String OK = "ok";//审批同意操作
-    private static final String REJECT = "reject";//审批退回操作
-    private static final String REJECTTOSTART = "rejectToStart";//审批退回到开始环节操作
-    private static final String ONGOING = "ongoing";//流程正在进行中状态
-    private static final String FINISH = "finish";//流程结束状态
-    private static final String ADDSIGN = "addSign";//加签
-    private static final String RELAY = "relay";//加签
+//    private static final String NEXTASSIGNEES = "assignees";//下一环节审批人
+//    private static final String OK = "ok";//审批同意操作
+//    private static final String REJECT = "reject";//审批退回操作
+//    private static final String REJECTTOSTART = "rejectToStart";//审批退回到开始环节操作
+//    private static final String ONGOING = "ongoing";//流程正在进行中状态
+//    private static final String FINISH = "finish";//流程结束状态
+//    private static final String ADDSIGN = "addSign";//加签
+//    private static final String RELAY = "relay";//加签
 
 
     /**
      * 部属流程
      * @author Thunder
      * @date 2019/1/3 9:35
-     * @param bpmn claimCompanyActiviti.bpmn 文件名和后缀
+     * @param bpmn claimCompanyActiviti.xml 文件名和后缀
      * @param name 流程名字(随意)
      * @param category 流程的类别(随意)
      * @return java.lang.String
@@ -148,9 +149,9 @@ public class ActivitiService {
      */
     public void compileTask(String taskId,String assignees,String assign){
         Map<String,Object> params = new HashMap<>();
-        params.put("message",OK);
+        params.put("message",ActivitiEnum.OK.getValue());
         //指定下一环节审批人
-        params.put(NEXTASSIGNEES,assignees);
+        params.put(ActivitiEnum.NEXTASSIGNEES.getValue(),assignees);
         //当前环节审批人
         taskService.setAssignee(taskId,assign);
         taskService.complete(taskId,params);
@@ -164,7 +165,7 @@ public class ActivitiService {
      */
     public void rejectTask(String taskId,String assign){
         Map<String,Object> params = new HashMap<>();
-        params.put("message",REJECT);
+        params.put("message",ActivitiEnum.REJECT.getValue());
         taskService.setAssignee(taskId,assign);//指定当前审批人
         taskService.complete(taskId,params);
     }
@@ -177,10 +178,10 @@ public class ActivitiService {
      */
     public String rejectTaskToStart(String taskId,String assign){
         Map<String,Object> params = new HashMap<>();
-        params.put("message",REJECTTOSTART);
+        params.put("message",ActivitiEnum.REJECTTOSTART.getValue());
         taskService.setAssignee(taskId,assign);//指定当前审批人
         taskService.complete(taskId,params);
-        return REJECTTOSTART;
+        return ActivitiEnum.REJECTTOSTART.getValue();
     }
     /**
      *
@@ -232,10 +233,10 @@ public class ActivitiService {
                 .singleResult();
         String processState;
         if (pi!=null){
-            processState= ONGOING;
+            processState= ActivitiEnum.ONGOING.getValue();
             System.out.println("该流程实例"+processInstanceId+"正在运行...  "+"当前活动的任务:"+pi.getBusinessKey());
         }else {
-            processState= FINISH;
+            processState= ActivitiEnum.FINISH.getValue();
             System.out.println("当前的流程实例"+processInstanceId+" 已经结束！");
         }
         return processState;
@@ -288,7 +289,7 @@ public class ActivitiService {
      */
     public void addSign(String taskId,String assign){
         //设置流程变量key为type,value为addSign 为了让领取到这个任务的人晓得是通过加签派来的
-        taskService.setVariable(taskId,"type",ADDSIGN);
+        taskService.setVariable(taskId,"type",ActivitiEnum.ADDSIGN.getValue());
         taskService.delegateTask(taskId, assign);
     }
 
@@ -301,8 +302,8 @@ public class ActivitiService {
      * @return void
      */
     public void relay(String taskId,String assign){
-        //设置流程变量key为type,value为addSign 为了让领取到这个任务的人晓得是通过加签派来的
-        taskService.setVariable(taskId,"type",RELAY);
+        //设置流程变量key为type,value为relay 为了让领取到这个任务的人晓得是通过加签派来的
+        taskService.setVariable(taskId,"type",ActivitiEnum.RELAY.getValue());
         taskService.delegateTask(taskId, assign);
     }
     /**

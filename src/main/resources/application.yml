@@ -1,0 +1,16 @@
+
+server:
+  port: 8201
+spring:
+  profiles:
+    active: dev
+  application:
+    name: activiti-client
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8100/eureka/

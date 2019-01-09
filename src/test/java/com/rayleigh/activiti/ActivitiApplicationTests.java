@@ -43,7 +43,7 @@ public class ActivitiApplicationTests {
     @Test
     public void deploy(){
 
-        String id = activitiService.deployProcess("claimCompanyActiviti.bpmn","first_last","测试认领企业");
+        String id = activitiService.deployProcess("claimCompanyActiviti.xml","first_last","测试认领企业");
         System.out.println(id);
 
     }
